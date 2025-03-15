@@ -4,3 +4,4 @@ pip-chill==1.0.3
 python-decouple==3.8
 rembg==2.0.64
 svglib==1.5.1
+svgtrace==2024
