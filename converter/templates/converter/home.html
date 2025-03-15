@@ -1,5 +1,23 @@
 {% extends 'converter/base.html' %}
 {% block content %}
+<style>
+    .processed-image {
+        width: 100%;           /* Full width of the card */
+        height: 200px;         /* Fixed height for all images (adjust as needed) */
+        object-fit: cover;     /* Scales image to cover the area, cropping if necessary */
+        object-position: center; /* Centers the image within the container */
+    }
+
+    .card {
+        height: 100%;          /* Ensures all cards stretch to the same height */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex-grow: 1;          /* Allows card body to expand and align content */
+    }
+</style>
     <h1 class="text-center mb-4">Convert Images with Ease</h1>
     <div class="row">
         <div class="col-md-6">
@@ -27,7 +45,7 @@
             {% if img.processed_file %}
                 <div class="col-md-4 mb-3">
                     <div class="card">
-                        <img src="{{ img.processed_file.url }}" class="card-img-top" alt="Processed Image">
+                        <img src="{{ img.processed_file.url }}" class="card-img-top processed-image" alt="Processed Image">
                         <div class="card-body">
                             <p class="card-text">{{ img.process_type }} - {{ img.created_at }}</p>
                             <a href="{% url 'download_file' img.pk %}" class="btn btn-primary">Download</a>

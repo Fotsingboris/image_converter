@@ -7,13 +7,78 @@
     <title>Image Converter</title>
     {% bootstrap_css %}
     <style>
-        body { background-color: #FFFFFF; color: #007BFF; }
-        .navbar, .footer { background-color: #007BFF; color: #FFFFFF; }
-        .btn-primary { background-color: #007BFF; border-color: #007BFF; }
-        .btn-primary:hover { background-color: #0056b3; border-color: #0056b3; }
+        body {
+            background-color: #FFFFFF;
+            color: #007BFF;
+            margin: 0; /* Remove default margin */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column; /* Use flexbox to push footer down */
+        }
+
+        .navbar, .footer {
+            background-color: #007BFF;
+            color: #FFFFFF;
+        }
+
+        .btn-primary {
+            background-color: #007BFF;
+            border-color: #007BFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .content-wrapper {
+            flex: 1 0 auto; /* Allow content to grow and push footer down */
+        }
+
+        .footer {
+            flex-shrink: 0; /* Prevent footer from shrinking */
+            padding: 1rem 0; /* Consistent padding */
+        }
+
+        /* Loader Styles */
+        .loader-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 9999; /* On top of everything */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 8px solid #f3f3f3; /* Light gray border */
+            border-top: 8px solid #007BFF; /* Blue spinning part */
+            border-radius: 50%;
+            animation: spin 1s linear infinite; /* Spinning animation */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-overlay.active {
+            display: flex; /* Show when active */
+        }
     </style>
 </head>
 <body>
+    <!-- Loader -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader"></div>
+    </div>
+
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand text-white" href="{% url 'home' %}">Image Converter</a>
@@ -24,16 +89,31 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-        {% block content %}{% endblock %}
+    <div class="content-wrapper">
+        <div class="container my-5">
+            {% block content %}{% endblock %}
+        </div>
     </div>
 
     <footer class="footer py-3 text-center">
         <div class="container">
-            <span>&copy; 2025 Image Converter - Powered by xAI</span>
+            <span>© 2025 Image Converter - Powered by xAI</span>
         </div>
     </footer>
 
     {% bootstrap_javascript %}
+    <script>
+        // Show loader when form is submitted
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const loader = document.getElementById('loader');
+
+            if (form) {
+                form.addEventListener('submit', function() {
+                    loader.classList.add('active'); // Show loader
+                });
+            }
+        });
+    </script>
 </body>
 </html>
