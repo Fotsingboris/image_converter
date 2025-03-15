@@ -1,0 +1,42 @@
+{% extends 'converter/base.html' %}
+{% block content %}
+    <h1 class="text-center mb-4">Convert Images with Ease</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Convert to SVG</h3>
+            <form method="post" enctype="multipart/form-data" action="{% url 'process_image' 'svg' %}">
+                {% csrf_token %}
+                <input type="file" name="image" class="form-control mb-2" accept="image/*" required>
+                <button type="submit" class="btn btn-primary">Convert</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h3>Remove Background</h3>
+            <form method="post" enctype="multipart/form-data" action="{% url 'process_image' 'bg_remove' %}">
+                {% csrf_token %}
+                <input type="file" name="image" class="form-control mb-2" accept="image/*" required>
+                <button type="submit" class="btn btn-primary">Remove</button>
+            </form>
+        </div>
+    </div>
+
+    {% if processed_images %}
+    <h2 class="mt-5">Processed Images</h2>
+    <div class="row">
+        {% for img in processed_images %}
+            {% if img.processed_file %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img src="{{ img.processed_file.url }}" class="card-img-top" alt="Processed Image">
+                        <div class="card-body">
+                            <p class="card-text">{{ img.process_type }} - {{ img.created_at }}</p>
+                            <a href="{% url 'download_file' img.pk %}" class="btn btn-primary">Download</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}

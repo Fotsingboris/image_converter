@@ -1,0 +1,12 @@
+{% extends 'converter/base.html' %}
+{% block content %}
+    <h1 class="text-center mb-4">Preview Your Processed Image</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <img src="{{ processed_img.processed_file.url }}" class="img-fluid mb-3" alt="Processed Image">
+            <p>{{ processed_img.process_type }} - {{ processed_img.created_at }}</p>
+            <a href="{% url 'download_file' processed_img.pk %}" class="btn btn-primary">Download</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+{% endblock %}
